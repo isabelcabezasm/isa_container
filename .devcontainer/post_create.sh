@@ -19,6 +19,7 @@ if ! command -v uv &> /dev/null; then
     export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
+export UV_LINK_MODE=copy
 # Sync dependencies
 uv sync
 
@@ -29,6 +30,12 @@ mkdir -p .vscode
 # Set proper permissions
 echo "🔒 Setting permissions..."
 chmod +x /workspaces/isa_container/.devcontainer/post_create.sh
+chmod +x /workspaces/developer-productivity/bin/env
+chmod +x /workspaces/developer-productivity/bin/help
+chmod +x /workspaces/developer-productivity/bin/test
+chmod +x /workspaces/developer-productivity/bin/lint/all
+chmod +x /workspaces/developer-productivity/bin/lint/py
+chmod +x /workspaces/developer-productivity/bin/lint/md
 
 # Create a sample .env file if it doesn't exist
 if [ ! -f ".env" ]; then
@@ -45,8 +52,16 @@ echo "3. Start coding! 🚀"
 echo ""
 
 echo "📝 Available commands:"
-echo "  - uv sync                    # Install/update dependencies"
-echo "  - uv run ruff check          # Lint code"
-echo "  - uv run ruff format         # Format code"
-echo "  - uv run pyright             # Type checking"
-echo "  - uv run python -m src.main  # Run main application"
+echo "  - bin/help                    # Shows help options"
+echo "  - bin/env                     # Exports variables from an environment file"
+
+echo "  - bin/lint/all                # Run all linting"
+echo "  - bin/lint/md                 # Lint all Markdown files"
+echo "  - bin/lint/py                 # Format, line and type check all Python files"
+echo "  - bin/test                    # Run all unit tests"
+
+echo "  - uv sync                     # Install/update dependencies"
+echo "  - uv run ruff check           # Lint code"
+echo "  - uv run ruff format          # Format code"
+echo "  - uv run pyright              # Type checking"
+echo "  - uv run python -m src.main   # Run main application"
