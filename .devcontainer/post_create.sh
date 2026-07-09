@@ -5,12 +5,18 @@ set -e
 
 echo "🚀 Setting up isa_container development environment..."
 
+
+# Resolve workspace root relative to this script
+WORKSPACE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$WORKSPACE_DIR"
+
+
 # Ensure uv is in PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # Install project dependencies
 echo "📦 Installing Python dependencies..."
-cd /workspaces/isa_container
+cd "$WORKSPACE_DIR"
 
 # Check if uv is available, if not install it
 if ! command -v uv &> /dev/null; then
@@ -29,18 +35,18 @@ mkdir -p .vscode
 
 # Set proper permissions
 echo "🔒 Setting permissions..."
-chmod +x /workspaces/isa_container/.devcontainer/post_create.sh
-chmod +x /workspaces/developer-productivity/bin/env
-chmod +x /workspaces/developer-productivity/bin/help
-chmod +x /workspaces/developer-productivity/bin/test
-chmod +x /workspaces/developer-productivity/bin/lint/all
-chmod +x /workspaces/developer-productivity/bin/lint/py
-chmod +x /workspaces/developer-productivity/bin/lint/md
+chmod +x "$WORKSPACE_DIR/.devcontainer/post_create.sh"
+chmod +x "$WORKSPACE_DIR/developer-productivity/bin/env"
+chmod +x "$WORKSPACE_DIR/developer-productivity/bin/help"
+chmod +x "$WORKSPACE_DIR/developer-productivity/bin/test"
+chmod +x "$WORKSPACE_DIR/developer-productivity/bin/lint/all"
+chmod +x "$WORKSPACE_DIR/developer-productivity/bin/lint/py"
+chmod +x "$WORKSPACE_DIR/developer-productivity/bin/lint/md"
 
 # Create a sample .env file if it doesn't exist
-if [ ! -f ".env" ]; then
+if [ ! -f "$WORKSPACE_DIR/.env" ]; then
     echo "🔐 Creating .env file from template..."
-    cp .env.template .env
+    cp "$WORKSPACE_DIR/.env.template" "$WORKSPACE_DIR/.env"
 fi
 
 echo "✅ Developer environment setup complete!"
