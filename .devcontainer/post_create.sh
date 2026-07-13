@@ -36,12 +36,21 @@ mkdir -p .vscode
 # Set proper permissions
 echo "🔒 Setting permissions..."
 chmod +x "$WORKSPACE_DIR/.devcontainer/post_create.sh"
-chmod +x "$WORKSPACE_DIR/developer-productivity/bin/env"
-chmod +x "$WORKSPACE_DIR/developer-productivity/bin/help"
-chmod +x "$WORKSPACE_DIR/developer-productivity/bin/test"
-chmod +x "$WORKSPACE_DIR/developer-productivity/bin/lint/all"
-chmod +x "$WORKSPACE_DIR/developer-productivity/bin/lint/py"
-chmod +x "$WORKSPACE_DIR/developer-productivity/bin/lint/md"
+
+for script_path in \
+    "$WORKSPACE_DIR/bin/env" \
+    "$WORKSPACE_DIR/bin/help" \
+    "$WORKSPACE_DIR/bin/test" \
+    "$WORKSPACE_DIR/bin/lint/all" \
+    "$WORKSPACE_DIR/bin/lint/py" \
+    "$WORKSPACE_DIR/bin/lint/md"
+do
+    if [ -f "$script_path" ]; then
+        chmod +x "$script_path"
+    else
+        echo "⚠️ Skipping missing script: $script_path"
+    fi
+done
 
 # Create a sample .env file if it doesn't exist
 if [ ! -f "$WORKSPACE_DIR/.env" ]; then
